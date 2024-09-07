@@ -8,7 +8,7 @@ const middleware = require('./middleware')
 const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({origin: '*'}))
 mongoose
   .connect(
     'mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
