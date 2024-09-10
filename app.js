@@ -16,6 +16,28 @@ mongoose
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
 
+function authenticateToken(request, response, next) {
+  let jwtToken
+  const authHeader = request.headers['authorization']
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(' ')[1]
+  }
+  if (jwtToken === undefined) {
+    response.status(401)
+    response.send('Your Not Authorized User To  Make Changes On Assignments')
+  } else {
+    jwt.verify(jwtToken, 'jwt', async (error, payload) => {
+      if (error) {
+        response.status(401)
+        response.send(
+          'Your Not Authorized User To  Make Changes On Assignments',
+        )
+      } else {
+        next()
+      }
+    })
+  }
+ }
 app.post('/register', async (req, res) => {
   try {
     const {username, email, password} = req.body
@@ -52,7 +74,7 @@ app.post('/login', async (req, res) => {
         id: exits.id,
       },
     }
-    jwt.sign(payload, 'jwtSecret', {expiresIn: 36h}, (err, token) => {
+    jwt.sign(payload, 'jwt', {expiresIn: 36h}, (err, token) => {
       if (err) throw err
       return res.json({token})
     })
@@ -62,14 +84,11 @@ app.post('/login', async (req, res) => {
   }
 })
 
-app.get('/product', middleware, async (req, res) => {
-  try {
-    let exits = await Registeruser.findById(req.user.id)
-    if (!exits) {
-      return res.status(400).send('User Not Found')
-    }
-     return res.send(await BrandName.find())
-  } catch (err) {
+app.get('/product', authenticateToken, async (req, res) => {
+  try{
+    return res.send(await BrandName.find())
+  }
+  catch (err) {
     console.log(err)
     res.status(500).send('Server Error')
   }
