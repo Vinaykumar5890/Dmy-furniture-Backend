@@ -12,12 +12,8 @@ let Registeruser = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-  },
-  confirmpassword: {
-    type: String,
-    required: true,
-  },
+    required: true
+  }
 })
 
 module.exports = mongoose.model('Registeruser', Registeruser)
