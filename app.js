@@ -18,19 +18,16 @@ mongoose
 
 app.post('/register', async (req, res) => {
   try {
-    const {username, email, password, confirmpassword} = req.body
+    const {username, email, password} = req.body
     let exits = await Registeruser.findOne({email})
     if (exits) {
       return res.status(400).send('User Already Exist')
     }
-    if (password !== confirmpassword) {
-      return res.status(400).send('Passwords are not Matching')
-    }
+    
     let newUser = new Registeruser({
       username,
       email,
-      password,
-      confirmpassword,
+      password
     })
     await newUser.save()
     res.status(200).send('Register Succesfully')
@@ -55,7 +52,7 @@ app.post('/login', async (req, res) => {
         id: exits.id,
       },
     }
-    jwt.sign(payload, 'jwtSecret', {expiresIn: 100000000000}, (err, token) => {
+    jwt.sign(payload, 'jwtSecret', {expiresIn: 36h}, (err, token) => {
       if (err) throw err
       return res.json({token})
     })
