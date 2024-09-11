@@ -1,14 +1,27 @@
 const jwt = require('jsonwebtoken')
 
-module.exports = function (req, res, next) {
+module.exports = function (request, response, next) {
   try {
-    let token = req.header('x-token')
-    if (!token) {
-      return res.status(400).send('Token Not Found')
-    }
-    let decode = jwt.verify(token, 'jwtSecret')
-    req.user = decode.user
-    next()
+  let jwtToken
+  const authHeader = request.headers['authorization']
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(' ')[1]
+  }
+  if (jwtToken === undefined) {
+    response.status(401)
+    response.send('Your Not Authorized User To  Make Changes On Assignments')
+  } else {
+    jwt.verify(jwtToken, 'jwt', async (error, payload) => {
+      if (error) {
+        response.status(401)
+        response.send(
+          'Your Not Authorized User To  Make Changes On Assignments',
+        )
+      } else {
+        next()
+      }
+    })
+  }
   } catch (err) {
     console.log(err)
     return res.status(500).send('Server Error ')
