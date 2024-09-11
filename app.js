@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
         id: exits.id,
       },
     }
-    jwt.sign(payload, 'jwt', {expiresIn: 36h}, (err, jwtToken) => {
+    jwt.sign(payload, 'jwt', (err, jwtToken) => {
       if (err) throw err
       return res.json({jwtToken})
     })
