@@ -107,17 +107,14 @@ app.post('/brand', async (req, res) => {
 })
 
 app.get('/brand', async (req, res) => {
-  const { brandname, sort, search } = req.query;
+  const { category, sort, search } = req.query;
   let filter = {};
-  if (brandname) {
-    filter.brandname = brandname;
+  if (category) {
+    filter.category = category;
   }
   if (search) {
-    filter.brandname = { $regex: search, $options: 'i' };
+    filter.name = { $regex: search, $options: 'i' };
   }
-   const options = {
-      limit: 3 // Limit the number of results to 5
-    }
   try {
     const allData = await BrandName.find(filter,options)
     return res.json(allData)
