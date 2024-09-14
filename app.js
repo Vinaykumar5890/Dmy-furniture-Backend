@@ -107,8 +107,16 @@ app.post('/brand', async (req, res) => {
 })
 
 app.get('/brand', async (req, res) => {
+  const { brandname, sort, search } = req.query;
+  let filter = {};
+  if (brandname) {
+    filter.brandname = brandname;
+  }
+  if (search) {
+    filter.brandname = { $regex: search, $options: 'i' };
+  }
   try {
-    const allData = await BrandName.find()
+    const allData = await BrandName.find(filter)
     return res.json(allData)
   } catch (err) {
     console.log(err)
