@@ -116,7 +116,7 @@ app.get('/brand', async (req, res) => {
     filter.name = { $regex: search, $options: 'i' };
   }
   try {
-    const allData = await BrandName.find(filter,options)
+    const allData = await BrandName.find(filter)
     return res.json(allData)
   } catch (err) {
     console.log(err)
