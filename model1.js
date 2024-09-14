@@ -1,10 +1,15 @@
 const mongoose = require('mongoose')
 
 const BrandName = mongoose.Schema({
-  brandname: {
-    type: String,
-    required: true,
+  name: String,
+  description: String,
+  price: Number,
+  category: String,
+  dimensions: {
+    height: Number,
+    width: Number
   },
+  images: [String] ,
   date: {
     type: Date,
     default: Date.now,
