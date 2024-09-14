@@ -115,8 +115,11 @@ app.get('/brand', async (req, res) => {
   if (search) {
     filter.brandname = { $regex: search, $options: 'i' };
   }
+   const options = {
+      limit: 3 // Limit the number of results to 5
+    }
   try {
-    const allData = await BrandName.find(filter)
+    const allData = await BrandName.find(filter,options)
     return res.json(allData)
   } catch (err) {
     console.log(err)
