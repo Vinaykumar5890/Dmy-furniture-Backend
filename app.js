@@ -98,7 +98,7 @@ app.get('/product', authenticateToken , async (req, res) => {
 app.post('/brand', async (req, res) => {
   const {name,description,price,category,dimensions,images} = req.body
   try {
-    const newData = new BrandName({brandname})
+    const newData = new BrandName({name,description,price,category,dimensions,images})
     await newData.save()
     return res.send(await BrandName.find())
   } catch (err) {
