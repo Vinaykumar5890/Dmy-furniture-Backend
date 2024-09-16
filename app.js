@@ -86,9 +86,23 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/product', authenticateToken , async (req, res) => {
-  try{
-    return res.send(await BrandName.find())
+  const { category, sort, search } = req.query;
+  let filter = {};
+  if (category) {
+    filter.category = category;
   }
+  if (search) {
+    filter.name = { $regex: search, $options: 'i' };
+  }
+    let sortOption = {};
+    if (sort) {
+        const [key, order] = sort.split(':');
+        sortOption[key] = order === 'desc' ? -1 : 1;
+    } 
+  try {
+    const allData = await BrandName.find(filter).sort(sortOption);
+    return res.json(allData)
+  } 
   catch (err) {
     console.log(err)
     res.status(500).send('Server Error')
@@ -115,8 +129,13 @@ app.get('/brand', async (req, res) => {
   if (search) {
     filter.name = { $regex: search, $options: 'i' };
   }
+    let sortOption = {};
+    if (sort) {
+        const [key, order] = sort.split(':');
+        sortOption[key] = order === 'desc' ? -1 : 1;
+    } 
   try {
-    const allData = await BrandName.find(filter)
+    const allData = await BrandName.find(filter).sort(sortOption);
     return res.json(allData)
   } catch (err) {
     console.log(err)
