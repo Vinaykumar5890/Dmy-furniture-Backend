@@ -14,6 +14,10 @@ let Registeruser = new mongoose.Schema({
     type: String,
     required: true,
   },
+   date: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
 module.exports = mongoose.model('Registeruser', Registeruser)
