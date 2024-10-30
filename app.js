@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
+const bcrypt  = require('bcrypt')
 const Registeruser = require('./model')
 const BrandName = require('./model1')
 const middleware = require('./middleware')
@@ -39,54 +40,103 @@ function authenticateToken(request, response, next) {
   }
 }
 
+
+//User Register Using Post Method : /register
+
 app.post('/register', async (req, res) => {
   try {
     const {username, email, password} = req.body
-    let exits = await Registeruser.findOne({email})
+    let exits = await Admituser.findOne({email})
     if (exits) {
       return res.status(400).send('User Already Exist')
-    } 
-    if( password.length>6){
-      return res.status(400).send('Password Too Short')
+    } else if (!email || !username || !password) {
+      return res.status(400).send('All fields are required')
     }
-    
-    let newUser = new Registeruser({
-      username,
-      email,
-      password
-    })
-    await newUser.save()
-    res.status(200).send('Register Succesfully')
+    if (password.length > 6) {
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      let newUser = new Admituser({
+        username,
+        email,
+        password: hashedPassword,
+      })
+      await newUser.save()
+      res.status(200).send('Register Succesfully')
+    } else {
+      res.status(400).send('Password Too Short')
+    }
   } catch (err) {
     console.log(err)
     return res.status(500).send('Internal Server Error')
   }
 })
 
+//User Login Using Post Method : /Login
+
 app.post('/login', async (req, res) => {
   try {
     const {email, password} = req.body
-    let exits = await Registeruser.findOne({email})
+    let exits = await Admituser.findOne({email})
     if (!exits) {
-      return res.status(400).send('User Not Found')
+      return res.status(400).send("User Doesn't Exits")
+    } else if (!email || !password) {
+      return res.status(400).send('All fields are required')
+    } else {
+      const isPasswordMatched = await bcrypt.compare(password, exits.password)
+      if (isPasswordMatched === true) {
+        let payload = {
+          user: {
+            id: exits.id,
+          },
+        }
+        jwt.sign(payload, 'jwt', (err, jwtToken) => {
+          if (err) throw err
+          return res.json({jwtToken})
+        })
+      } else {
+        return res.status(400).send('Invalid Password')
+      }
     }
-    if (exits.password !== password) {
-      return res.status(400).send('Invalid Password')
-    }
-    let payload = {
-      user: {
-        id: exits.id,
-      },
-    }
-    jwt.sign(payload, 'jwt', (err, jwtToken) => {
-      if (err) throw err
-      return res.json({jwtToken})
-    })
   } catch (err) {
     console.log(err)
     res.status(500).send('Server Error')
   }
 })
+
+//User Change Password using Put Method  : /changePassword
+
+app.put('/changePassword',authenticateToken,async (req, res) => {
+  try {
+    const {email, oldPassword, newPassword} = req.body
+    let exits = await Admituser.findOne({email})
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, exits.password)
+    if (!exits) {
+      return res.status(400).send("User Doesn't Exits")
+    } else if (!email || !oldPassword || !newPassword) {
+      return res.status(400).send('All fields are required')
+    } else if (oldPassword === newPassword) {
+      return res.status(400).send('Passwords are Same')
+    } else if (!isPasswordCorrect) {
+      return res.status(401).send('Old password is incorrect')
+    } else {
+      const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+      // Update the user's password in the database
+
+      const updated = await Admituser.updateOne(
+        {email},
+        {$set: {password: hashedPassword}},
+      )
+      return res.status(200).send('Password updated successfully')
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Server Error')
+  }
+})
+
+
+
 
 app.get('/product', authenticateToken , async (req, res) => {
   const { category, sort, search } = req.query;
