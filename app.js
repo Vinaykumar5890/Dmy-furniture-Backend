@@ -46,7 +46,7 @@ function authenticateToken(request, response, next) {
 app.post('/register', async (req, res) => {
   try {
     const {username, email, password} = req.body
-    let exits = await Admituser.findOne({email})
+    let exits = await Registeruser.findOne({email})
     if (exits) {
       return res.status(400).send('User Already Exist')
     } else if (!email || !username || !password) {
@@ -55,7 +55,7 @@ app.post('/register', async (req, res) => {
     if (password.length > 6) {
       const hashedPassword = await bcrypt.hash(password, 10)
 
-      let newUser = new Admituser({
+      let newUser = new Registeruser({
         username,
         email,
         password: hashedPassword,
@@ -76,7 +76,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const {email, password} = req.body
-    let exits = await Admituser.findOne({email})
+    let exits = await Registeruser.findOne({email})
     if (!exits) {
       return res.status(400).send("User Doesn't Exits")
     } else if (!email || !password) {
@@ -105,10 +105,10 @@ app.post('/login', async (req, res) => {
 
 //User Change Password using Put Method  : /changePassword
 
-app.put('/changePassword',authenticateToken,async (req, res) => {
+app.put('/changePassword',async (req, res) => {
   try {
     const {email, oldPassword, newPassword} = req.body
-    let exits = await Admituser.findOne({email})
+    let exits = await Registeruser.findOne({email})
     const isPasswordCorrect = await bcrypt.compare(oldPassword, exits.password)
     if (!exits) {
       return res.status(400).send("User Doesn't Exits")
