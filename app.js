@@ -24,13 +24,13 @@ function authenticateToken(request, response, next) {
   }
   if (jwtToken === undefined) {
     response.status(401)
-    response.send('Your Not Authorized User To  Make Changes On Assignments')
+    response.send('Your Not Authorized User')
   } else {
     jwt.verify(jwtToken, 'jwt', async (error, payload) => {
       if (error) {
         response.status(401)
         response.send(
-          'Your Not Authorized User To  Make Changes On Assignments',
+          'Your Not Authorized User',
         )
       } else {
         next()
@@ -45,6 +45,9 @@ app.post('/register', async (req, res) => {
     let exits = await Registeruser.findOne({email})
     if (exits) {
       return res.status(400).send('User Already Exist')
+    } 
+    if( password.length>6){
+      return res.status(400).send('Password Too Short')
     }
     
     let newUser = new Registeruser({
