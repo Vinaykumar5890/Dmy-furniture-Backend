@@ -123,7 +123,7 @@ app.put('/changePassword',async (req, res) => {
 
       // Update the user's password in the database
 
-      const updated = await Admituser.updateOne(
+      const updated = await Registeruser.updateOne(
         {email},
         {$set: {password: hashedPassword}},
       )
