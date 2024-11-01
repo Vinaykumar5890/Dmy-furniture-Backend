@@ -222,9 +222,9 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.get('/order/:id',authenticateToken,async (req, res) => {
+app.get('/order/:userid',authenticateToken,async (req, res) => {
   try {
-    const allData = await Order.findById(req.params.id)
+    const allData = await Order.findByUserId(req.params.userid)
     return res.json(allData)
   } catch (err) {
     console.log(err)
