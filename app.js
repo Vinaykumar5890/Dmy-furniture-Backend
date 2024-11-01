@@ -222,14 +222,25 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.get('/order/:userid',authenticateToken,async (req, res) => {
+app.get("/order/:userId", async (req, res) => {
+  const { userId } = req.params;
+
   try {
-    const allData = await Order.findByUserId(req.params.userid)
-    return res.json(allData)
-  } catch (err) {
-    console.log(err)
+    // Find orders where userId matches the provided userId
+    const orders = await Order.find({ userId: userId });
+
+    // Check if orders exist for the user
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this user." });
+    }
+
+    // Return the orders if found
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while retrieving orders." });
   }
-})
+});
+
 
 app.delete('/product/:id',authenticateToken,async (req, res) => {
   try {
