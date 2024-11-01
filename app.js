@@ -43,7 +43,7 @@ function authenticateToken(request, response, next) {
 
 ///Order Using Post Methid : /order   
 
-app.post('/order', async (req, res) => {
+app.post('/order',authenticateToken,async (req, res) => {
   const { userId, products, shippingAddress, paymentDetails, totalAmount } = req.body;
 
   try {
@@ -217,6 +217,14 @@ app.get('/brand',authenticateToken,async (req, res) => {
 app.get('/product/:id',authenticateToken,async (req, res) => {
   try {
     const allData = await BrandName.findById(req.params.id)
+    return res.json(allData)
+  } catch (err) {
+    console.log(err)
+  }
+})
+app.get('/order/:id',authenticateToken,async (req, res) => {
+  try {
+    const allData = await Order.findById(req.params.id)
     return res.json(allData)
   } catch (err) {
     console.log(err)
