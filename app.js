@@ -162,7 +162,7 @@ app.get('/product', authenticateToken , async (req, res) => {
   }
 })
 
-app.post('/product', async (req, res) => {
+app.post('/product',authenticateToken,async (req, res) => {
   const {name,description,price,category,dimensions,images} = req.body
   try {
     const newData = new BrandName({name,description,price,category,dimensions,images})
@@ -173,7 +173,7 @@ app.post('/product', async (req, res) => {
   }
 })
 
-app.get('/brand', async (req, res) => {
+app.get('/brand',authenticateToken,async (req, res) => {
   const { category, sort, search } = req.query;
   let filter = {};
   if (category) {
@@ -194,7 +194,7 @@ app.get('/brand', async (req, res) => {
     console.log(err)
   }
 })
-app.get('/product/:id', async (req, res) => {
+app.get('/product/:id',authenticateToken,async (req, res) => {
   try {
     const allData = await BrandName.findById(req.params.id)
     return res.json(allData)
@@ -203,7 +203,7 @@ app.get('/product/:id', async (req, res) => {
   }
 })
 
-app.delete('/product/:id', async (req, res) => {
+app.delete('/product/:id',authenticateToken,async (req, res) => {
   try {
     await BrandName.findByIdAndDelete(req.params.id)
     return res.json(await BrandName.find())
