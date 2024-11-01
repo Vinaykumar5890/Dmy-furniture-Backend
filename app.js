@@ -222,7 +222,7 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.get("/order/:userId", async (req, res) => {
+app.get("/order/:userId",authenticateToken,async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -246,6 +246,14 @@ app.delete('/product/:id',authenticateToken,async (req, res) => {
   try {
     await BrandName.findByIdAndDelete(req.params.id)
     return res.json(await BrandName.find())
+  } catch (err) {
+    console.log(err)
+  }
+})
+app.delete('/order/:id',authenticateToken,async (req, res) => {
+  try {
+    await Order.findByIdAndDelete(req.params.id)
+    return res.json(await Order.find())
   } catch (err) {
     console.log(err)
   }
