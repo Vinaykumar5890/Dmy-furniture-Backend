@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt  = require('bcrypt')
 const Registeruser = require('./model')
 const BrandName = require('./model1')
+const Order  = require('./model2')
 const middleware = require('./middleware')
 const app = express()
 
@@ -40,6 +41,25 @@ function authenticateToken(request, response, next) {
   }
 }
 
+///Order Using Post Methid : /order   
+
+app.post('/order', async (req, res) => {
+  const { userId, products, shippingAddress, paymentDetails, totalAmount } = req.body;
+
+  try {
+    const newOrder = new Order({
+      userId,
+      products,
+      shippingAddress,
+      paymentDetails,
+      totalAmount,
+    });
+    const savedOrder = await newOrder.save();
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //User Register Using Post Method : /register
 
