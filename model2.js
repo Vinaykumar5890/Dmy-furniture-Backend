@@ -7,24 +7,7 @@ const Order = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    products: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-          min: 1, // Ensures at least one item is ordered
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    products: [String, required: true],
     shippingAddress: {
       name: { type: String, required: true },
       street: { type: String, required: true },
