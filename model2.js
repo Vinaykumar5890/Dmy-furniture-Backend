@@ -7,6 +7,10 @@ const Order = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    date: {
+    type: Date,
+    default: Date.now,
+  },
     products: [],
     shippingAddress: {
       name: { type: String, required: true },
