@@ -132,16 +132,20 @@ app.put('/changePassword',async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(oldPassword, exits.password)
     if (!exits) {
       return res.status(400).send("User Doesn't Exits")
-    } else if (!email || !oldPassword || !newPassword) {
+    } 
+    else if (!email || !oldPassword || !newPassword) {
       return res.status(400).send('All fields are required')
     }
-      else if(newPassword.length>6){
+      else if(newPassword.length > 6){
       return res.status(400).send('New Password is Too Short')
-    } else if (oldPassword === newPassword) {
+    } 
+      else if (oldPassword === newPassword) {
       return res.status(400).send('Passwords are Same')
-    } else if (!isPasswordCorrect) {
+    } 
+      else if (!isPasswordCorrect) {
       return res.status(401).send('Old password is incorrect')
-    } else {
+    } 
+      else {
       const hashedPassword = await bcrypt.hash(newPassword, 10)
 
       // Update the user's password in the database
