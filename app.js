@@ -136,9 +136,6 @@ app.put('/changePassword',async (req, res) => {
     else if (!email || !oldPassword || !newPassword) {
       return res.status(400).send('All fields are required')
     }
-      else if(newPassword.length > 6){
-      return res.status(400).send('New Password is Too Short')
-    } 
       else if (oldPassword === newPassword) {
       return res.status(400).send('Passwords are Same')
     } 
@@ -146,6 +143,10 @@ app.put('/changePassword',async (req, res) => {
       return res.status(401).send('Old password is incorrect')
     } 
       else {
+        if(newPassword.length > 6){
+             return res.status(400).send('New Password is Too Short')
+         } 
+        else {
       const hashedPassword = await bcrypt.hash(newPassword, 10)
 
       // Update the user's password in the database
@@ -155,6 +156,7 @@ app.put('/changePassword',async (req, res) => {
         {$set: {password: hashedPassword}},
       )
       return res.status(200).send('Password updated successfully')
+    }
     }
   } catch (err) {
     console.log(err)
