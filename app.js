@@ -134,6 +134,8 @@ app.put('/changePassword',async (req, res) => {
       return res.status(400).send("User Doesn't Exits")
     } else if (!email || !oldPassword || !newPassword) {
       return res.status(400).send('All fields are required')
+      else if(newPassword.length>6){
+      return res.status(400).send('New Password is Too Short')
     } else if (oldPassword === newPassword) {
       return res.status(400).send('Passwords are Same')
     } else if (!isPasswordCorrect) {
