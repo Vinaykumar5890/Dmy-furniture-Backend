@@ -142,7 +142,7 @@ app.put('/changePassword',async (req, res) => {
       else if (!isPasswordCorrect) {
       return res.status(401).send('Old password is incorrect')
     } 
-      else if (newPassword.length > 6){
+      else if (newPassword.length < 6){
          return res.status(401).send('New password is Too Short')
       }
       else {
