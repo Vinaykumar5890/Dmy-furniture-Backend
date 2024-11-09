@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 
 const Order = new mongoose.Schema(
   {
- userId : {
-    type: String,
-    required: true,
-  },
+   user: String ,
     date: {
     type: Date,
     default: Date.now,
