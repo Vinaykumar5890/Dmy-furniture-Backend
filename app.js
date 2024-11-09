@@ -44,16 +44,16 @@ function authenticateToken(request, response, next) {
 ///Order Using Post Methid : /order   
 
 app.post('/order',authenticateToken,async (req, res) => {
-  const { mail, products, shippingAddress, paymentDetails, totalAmount } = req.body;
+  const { userId, products, shippingAddress, paymentDetails, totalAmount } = req.body;
 
   try {
-     if (!mail || !products || ! shippingAddress || !paymentDetails || !totalAmount ) {
+     if (! userId || !products || ! shippingAddress || !paymentDetails || !totalAmount ) {
       return res.status(400).send('All fields are required')
     }
 
      else {
     const newOrder = new Order({
-     mail,
+      userId,
       products,
       shippingAddress,
       paymentDetails,
@@ -236,12 +236,12 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.get("/order/:mail",authenticateToken,async (req, res) => {
-  const { mail } = req.params;
+app.get("/order/:userId",authenticateToken,async (req, res) => {
+  const { userId} = req.params;
 
   try {
     // Find orders where userId matches the provided userId
-    const orders = await Order.find({ mail: mail });
+    const orders = await Order.find({ userId: userId });
 
     // Check if orders exist for the user
     if (!orders || orders.length === 0) {
