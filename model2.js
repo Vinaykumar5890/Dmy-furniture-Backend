@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const Order = new mongoose.Schema(
   {
-    userId: {
-      type:String,
-      ref: "User",
-      required: true,
-    },
+    email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
     date: {
     type: Date,
     default: Date.now,
@@ -41,8 +41,8 @@ const Order = new mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["Pending", "Processing", "Shipped", "Delivered", "Canceled"],
-      default: "Pending",
+      enum: ["Ordered", "Processing", "Shipped", "Delivered", "Canceled"],
+      default: "Ordered",
     },
     orderDate: {
       type: Date,
