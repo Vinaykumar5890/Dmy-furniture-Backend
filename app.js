@@ -236,12 +236,12 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.get("/order/:email",authenticateToken,async (req, res) => {
-  const { email } = req.params;
+app.get("/order/:mail",authenticateToken,async (req, res) => {
+  const { mail } = req.params;
 
   try {
     // Find orders where userId matches the provided userId
-    const orders = await Order.find({ email: email });
+    const orders = await Order.find({ mail: mail });
 
     // Check if orders exist for the user
     if (!orders || orders.length === 0) {
