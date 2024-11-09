@@ -2,10 +2,9 @@ const mongoose = require("mongoose");
 
 const Order = new mongoose.Schema(
   {
-    mail: {
+ userId : {
     type: String,
     required: true,
-    unique: false,
   },
     date: {
     type: Date,
