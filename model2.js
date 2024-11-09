@@ -5,7 +5,7 @@ const Order = new mongoose.Schema(
     mail: {
     type: String,
     required: true,
-    { unique: true, sparse: true },
+    unique: false,
   },
     date: {
     type: Date,
