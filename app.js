@@ -44,16 +44,16 @@ function authenticateToken(request, response, next) {
 ///Order Using Post Methid : /order   
 
 app.post('/order',authenticateToken,async (req, res) => {
-  const { email, products, shippingAddress, paymentDetails, totalAmount } = req.body;
+  const { mail, products, shippingAddress, paymentDetails, totalAmount } = req.body;
 
   try {
-     if (!email || !products || ! shippingAddress || !paymentDetails || !totalAmount ) {
+     if (!mail || !products || ! shippingAddress || !paymentDetails || !totalAmount ) {
       return res.status(400).send('All fields are required')
     }
 
      else {
     const newOrder = new Order({
-     email,
+     mail,
       products,
       shippingAddress,
       paymentDetails,
