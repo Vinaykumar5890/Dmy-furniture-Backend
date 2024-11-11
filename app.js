@@ -234,7 +234,20 @@ app.get('/product/:id',authenticateToken,async (req, res) => {
   } catch (err) {
     console.log(err)
   }
+})    
+
+app.get('/order/:id',authenticateToken,async (req, res) => {
+  try {
+    const allData = await Order.findById(req.params.id)
+    return res.json(allData)
+  } catch (err) {
+   return res.json(err)
+  }
 })
+
+
+
+
 app.get("/order/:user",authenticateToken,async (req, res) => {
   const { user} = req.params;
 
