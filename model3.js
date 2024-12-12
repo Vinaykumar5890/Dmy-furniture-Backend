@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 let Post = new mongoose.Schema({
    images: [String] ,
   description: { type: String, required: true },
+   profile: { type: String, required: true },
+   name:{type: String , required: true },
   likes: { type: Number, default: 0 },
   createdAt: { type: Date,  default: Date.now }
 })
