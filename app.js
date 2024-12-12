@@ -6,6 +6,7 @@ const bcrypt  = require('bcrypt')
 const Registeruser = require('./model')
 const BrandName = require('./model1')
 const Order  = require('./model2')
+const Post = require('./model3')
 const middleware = require('./middleware')
 const app = express()
 
@@ -205,6 +206,23 @@ app.post('/product',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
+app.post('/post-media',async (req, res) => {
+  const {images,description,likes} = req.body
+  try {
+    const newData = new Post({images,description,likes})
+    await newData.save()
+    return  res.status(200).send(await Post.find())
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+app.get('/post-media', async (req, res) => { 
+  try { 
+    const posts = await Post.find(); 
+    return res.json(posts); 
+  } catch (err) {
+    return res.status(400).json({ error: err.message }); } });
 
 app.get('/brand',authenticateToken,async (req, res) => {
   const { category, sort, search } = req.query;
