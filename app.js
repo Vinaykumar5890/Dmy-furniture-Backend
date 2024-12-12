@@ -207,7 +207,7 @@ app.post('/product',authenticateToken,async (req, res) => {
   }
 })
 app.post('/post-media',async (req, res) => {
-  const {images,description,likes} = req.body
+  const {images,description,profile,name,likes} = req.body
   try {
     const newData = new Post({images,description,likes})
     await newData.save()
