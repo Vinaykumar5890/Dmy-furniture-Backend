@@ -207,9 +207,9 @@ app.post('/product',authenticateToken,async (req, res) => {
   }
 })
 app.post('/post-media',async (req, res) => {
-  const {images,description,profile,name,profile,name,likes} = req.body
+  const {images,description,profile,name,likes} = req.body
   try {
-    const newData = new Post({images,description,likes})
+    const newData = new Post({images,description,profile,name,likes})
     await newData.save()
     return  res.status(200).send(await Post.find())
   } catch (err) {
