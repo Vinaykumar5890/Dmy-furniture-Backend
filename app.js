@@ -300,8 +300,15 @@ app.delete('/order/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-app.listen(3000, () => {
-  console.log('Server Running.....')
-})
+man()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('✅ Server is running and DB Connected...')
+    });
+  })
+  .catch((err) => {
+    console.error('❌ DB Connection Failed:', err);
+  });
+
 
 module.exports = app
