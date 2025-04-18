@@ -10,12 +10,13 @@ const Post = require('./model3')
 const middleware = require('./middleware')
 const app = express()
 
+require('dotenv').config();
+
 app.use(express.json())
 app.use(cors({origin: '*'}))
-const connect = async () =>{
+
 await mongoose
-  .connect(
-    'mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
+  .connect(process.env.MONGO_URI,{
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
