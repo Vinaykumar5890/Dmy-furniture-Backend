@@ -12,13 +12,14 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({origin: '*'}))
-mongoose
+const connect = async () =>{
+await mongoose
   .connect(
     'mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
   )
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
-
+}
 function authenticateToken(request, response, next) {
   let jwtToken
   const authHeader = request.headers['authorization']
