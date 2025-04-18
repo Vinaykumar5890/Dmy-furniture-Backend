@@ -15,7 +15,10 @@ app.use(cors({origin: '*'}))
 const connect = async () =>{
 await mongoose
   .connect(
-    'mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    'mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
   )
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
