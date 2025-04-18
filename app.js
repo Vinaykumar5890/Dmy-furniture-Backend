@@ -24,7 +24,7 @@ await mongoose
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
 }
-}
+
 function authenticateToken(request, response, next) {
   let jwtToken
   const authHeader = request.headers['authorization']
