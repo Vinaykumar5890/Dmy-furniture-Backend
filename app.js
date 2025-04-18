@@ -10,13 +10,12 @@ const Post = require('./model3')
 const middleware = require('./middleware')
 const app = express()
 
-require('dotenv').config();
 
 app.use(express.json())
 app.use(cors({origin: '*'}))
 const man = async ()=>{
-await mongoose
-  .connect(process.env.MONGO_URI,{
+  mongoose
+  .connect("mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
@@ -300,15 +299,10 @@ app.delete('/order/:id',authenticateToken,async (req, res) => {
     console.log(err)
   }
 })
-man()
-  .then(() => {
+
     app.listen(3000, () => {
       console.log('✅ Server is running and DB Connected...')
     });
-  })
-  .catch((err) => {
-    console.error('❌ DB Connection Failed:', err);
-  });
 
 
 module.exports = app
