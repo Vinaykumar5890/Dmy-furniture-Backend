@@ -177,7 +177,7 @@ app.put('/changePassword',async (req, res) => {
 
 
 
-app.get('/product', authenticateToken , async (req, res) => {
+app.get('/product',  async (req, res) => {
   const { category, sort, search } = req.query;
   let filter = {};
   if (category) {
