@@ -15,7 +15,7 @@ require('dotenv').config();
 app.use(express.json())
 app.use(cors({origin: '*'}))
 
-  mongoose.connect("mongodb+srv://vinay:Vinay@589@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  mongoose.connect("mongodb+srv://vinay:vUqCSpEBhIin9nXF@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
 
