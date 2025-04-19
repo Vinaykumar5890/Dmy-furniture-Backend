@@ -10,16 +10,12 @@ const Post = require('./model3')
 const middleware = require('./middleware')
 const app = express()
 
+require('dotenv').config();
 
 app.use(express.json())
 app.use(cors({origin: '*'}))
 
-  mongoose
-  .connect("mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  mongoose.connect("mongodb+srv://vinay:Vinay@589@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
 
