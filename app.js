@@ -13,7 +13,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({origin: '*'}))
-const man = async ()=>{
+
   mongoose
   .connect("mongodb+srv://vinay:vinay@cluster0.fv2hjsb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
       useNewUrlParser: true,
@@ -22,7 +22,7 @@ const man = async ()=>{
   )
   .then(() => console.log('DB Connected'))
   .catch(err => console.log(err))
-}
+
 
 function authenticateToken(request, response, next) {
   let jwtToken
